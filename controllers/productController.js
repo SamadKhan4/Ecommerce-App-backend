@@ -52,7 +52,7 @@ exports.getProducts = async (req, res) => {
       data: products,
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -75,7 +75,7 @@ exports.getProduct = async (req, res) => {
       data: product,
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -94,7 +94,7 @@ exports.getProductsByCategory = async (req, res) => {
       data: products,
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -109,9 +109,24 @@ exports.createProduct = async (req, res) => {
     let images = [];
     if (req.files && req.files.length > 0) {
       for (const file of req.files) {
-        const uploaded = await uploadToCloudinary(file.path);
-        images.push({ url: uploaded.url, publicId: uploaded.publicId });
+        try {
+          const uploaded = await uploadToCloudinary(file.path);
+          images.push({ url: uploaded.url, publicId: uploaded.publicId });
+        } catch (uploadError) {
+          console.log('Cloudinary upload failed, using placeholder');
+          // Use placeholder images if Cloudinary fails
+          images.push({ 
+            url: `https://via.placeholder.com/800x800?text=${encodeURIComponent(name)}`,
+            publicId: null
+          });
+        }
       }
+    } else {
+      // Add placeholder image if no files uploaded
+      images.push({ 
+        url: `https://via.placeholder.com/800x800?text=${encodeURIComponent(name)}`,
+        publicId: null
+      });
     }
 
     const product = await Product.create({
@@ -130,7 +145,7 @@ exports.createProduct = async (req, res) => {
       data: product,
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -184,7 +199,7 @@ exports.updateProduct = async (req, res) => {
       data: updatedProduct,
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -216,7 +231,7 @@ exports.deleteProduct = async (req, res) => {
       message: 'Product deleted successfully',
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -245,6 +260,6 @@ exports.searchProducts = async (req, res) => {
       data: products,
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };

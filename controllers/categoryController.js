@@ -14,7 +14,7 @@ exports.getCategories = async (req, res) => {
       data: categories,
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -28,8 +28,15 @@ exports.createCategory = async (req, res) => {
     // Upload image to Cloudinary if provided
     let imageUrl = image;
     if (req.file) {
-      const uploaded = await uploadToCloudinary(req.file.path);
-      imageUrl = uploaded.url;
+      try {
+        const uploaded = await uploadToCloudinary(req.file.path);
+        imageUrl = uploaded.url;
+      } catch (uploadError) {
+        console.log('Cloudinary upload failed, using local path');
+        imageUrl = image || 'https://via.placeholder.com/500x500?text=' + encodeURIComponent(name);
+      }
+    } else if (!imageUrl) {
+      imageUrl = 'https://via.placeholder.com/500x500?text=' + encodeURIComponent(name);
     }
 
     // Check if category exists
@@ -52,7 +59,7 @@ exports.createCategory = async (req, res) => {
       data: category,
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -95,7 +102,7 @@ exports.updateCategory = async (req, res) => {
       data: updatedCategory,
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -120,6 +127,6 @@ exports.deleteCategory = async (req, res) => {
       message: 'Category deleted successfully',
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };

@@ -46,7 +46,7 @@ exports.register = async (req, res) => {
       });
     }
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -98,7 +98,7 @@ exports.login = async (req, res) => {
       },
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -129,7 +129,7 @@ exports.getProfile = async (req, res) => {
       });
     }
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -171,6 +171,6 @@ exports.updateProfile = async (req, res) => {
       });
     }
   } catch (error) {
-    next(error);
+    throw error;
   }
 };

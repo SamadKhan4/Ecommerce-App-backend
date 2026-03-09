@@ -65,7 +65,7 @@ exports.createOrder = async (req, res) => {
       data: order,
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -84,7 +84,7 @@ exports.getMyOrders = async (req, res) => {
       data: orders,
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -115,7 +115,7 @@ exports.getAllOrders = async (req, res) => {
       data: orders,
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -163,7 +163,7 @@ exports.updateOrderStatus = async (req, res) => {
       data: updatedOrder,
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -215,6 +215,6 @@ exports.cancelOrder = async (req, res) => {
       data: order,
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };

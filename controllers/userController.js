@@ -26,7 +26,7 @@ exports.getAllUsers = async (req, res) => {
       data: users,
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -49,7 +49,7 @@ exports.getUserById = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -90,7 +90,7 @@ exports.updateUserRole = async (req, res) => {
       },
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
 
@@ -123,6 +123,6 @@ exports.deleteUser = async (req, res) => {
       message: 'User deleted successfully',
     });
   } catch (error) {
-    next(error);
+    throw error;
   }
 };
