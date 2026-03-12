@@ -1,4 +1,5 @@
 # 📚 Complete API Documentation - Tarzen Mobile Accessories
+##### Backend API = `https://ecommerce-app-backend-production-789c.up.railway.app/`
 
 ## 🔐 Authentication Required
 
